@@ -1,6 +1,6 @@
 Установка на OpenServer
 1. **Склонировать репозиторий.**
-   git clone https://github.com/your-username/your-project.git
+   git clone https://github.com/maksErnst/elementary-test
 2. **Установить зависимости.**
    cd your-project &&
    composer install
