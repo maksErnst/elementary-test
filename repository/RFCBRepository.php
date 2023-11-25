@@ -14,7 +14,7 @@ class RFCBRepository extends BasicRepository
     public static function findAll(): ?array
     {
 
-        $endpoint = 'http://www.cbr.ru/scripts/XML_daily.as';
+        $endpoint = 'http://www.cbr.ru/scripts/XML_daily.asp';
 
         $dataArray = self::fetchData($endpoint, true)->getBody()->getContents();
 
@@ -37,5 +37,4 @@ class RFCBRepository extends BasicRepository
 
         return null;
     }
-
 }

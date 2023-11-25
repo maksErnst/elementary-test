@@ -33,7 +33,5 @@ class BasicRepository extends Model
             echo json_encode(['error' => $response->getReasonPhrase()]);
             exit();
         }
-
     }
-
 }
