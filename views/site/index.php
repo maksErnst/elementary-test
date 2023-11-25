@@ -1,11 +1,6 @@
 <?php
 use yii\helpers\Html;
-use yii\widgets\Pjax;
-
-// Где-то в вашем представлении
 ?>
-
-
 
 <?= Html::dropDownList('source', null, [
     'thailand-wallets' => 'ЦБ Тайланда',
@@ -16,5 +11,6 @@ use yii\widgets\Pjax;
     'class' => 'form-control',
     'style' => 'margin: 20px',
 ]) ?>
+
 <div id="loading-spinner" class="loading"></div>
 <div id="ajax-content"></div>

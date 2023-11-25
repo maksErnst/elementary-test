@@ -14,7 +14,7 @@ class WalletController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -30,7 +30,10 @@ class WalletController extends Controller
         ];
     }
 
-    public function actionThailandWallets()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionThailandWallets(): string
     {
         if (!Yii::$app->request->isAjax) {
             throw new NotFoundHttpException('Page not found');
@@ -41,7 +44,10 @@ class WalletController extends Controller
         return $this->renderPartial('index', ['data' => $data]);
     }
 
-    public function actionRussiaWallets()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionRussiaWallets(): string
     {
         if (!Yii::$app->request->isAjax) {
             throw new NotFoundHttpException('Page not found');
@@ -56,28 +62,27 @@ class WalletController extends Controller
     {
         $cache = Yii::$app->cache;
         $cacheKey = 'allCurrencies_' . $source;
+        $cacheKeyReserve = 'lastCurrencies_' . $source;
+
         $currencies = $cache->get($cacheKey);
 
         if ($currencies === false) {
-            // Выбираем репозиторий в зависимости от источника
-            switch ($source) {
-                case 'thailand':
-                    $currencies = ThailandCBRepository::findAll();
-                    break;
-                case 'russia':
-                    $currencies = RFCBRepository::findAll();
-                    break;
-                default:
+            $currencies = match ($source) {
+                'thailand' => ThailandCBRepository::findAll(),
+                'russia' =>  RFCBRepository::findAll(),
+                default => null,
+            };
+            if (is_array($currencies)) {
+                $currenciesData = [];
+                foreach ($currencies as $currency) {
+                    $currenciesData[] = $currency->attributes;
+                }
 
-                    $currencies = null;
+                $cache->set($cacheKey, $currenciesData, 12 * 3600);
+                $cache->set($cacheKeyReserve, $currenciesData, 30 * 24 * 3600);
+            } else {
+                $currencies = $cache->get($cacheKeyReserve);
             }
-
-            $currenciesData = [];
-            foreach ($currencies as $currency) {
-                $currenciesData[] = $currency->attributes;
-            }
-
-            $cache->set($cacheKey, $currenciesData, 12 * 3600);
         }
 
         return $currencies;

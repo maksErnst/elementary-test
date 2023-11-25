@@ -14,8 +14,10 @@ $(document).ready(function() {
                         $("#loading-spinner").hide();
                         $("#ajax-content").show().html(data);
                     },
-                    error: function (error) {
-                        console.error("Error:", error);
+                    error: function (xhr, status, error) {
+                        $("#loading-spinner").hide();
+                        console.error('Произошла ошибка:', status, error);
+                        $("#ajax-content").show().html(data).append('Произошла ошибка: ' + error);
                     }
                 });
             });

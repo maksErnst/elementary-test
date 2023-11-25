@@ -2,24 +2,19 @@
 
 namespace app\repository;
 
-use Yii;
-
 class RFCBRepository extends BasicRepository
 {
-    public string $name;
-    public string $value;
-
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'value'], 'safe'],
         ];
     }
 
-    public static function findAll()
+    public static function findAll(): ?array
     {
 
-        $endpoint = 'http://www.cbr.ru/scripts/XML_daily.asp';
+        $endpoint = 'http://www.cbr.ru/scripts/XML_daily.as';
 
         $dataArray = self::fetchData($endpoint, true)->getBody()->getContents();
 
